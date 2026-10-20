@@ -498,9 +498,10 @@ const S={anonPts:[],player:null,game:null,tokens:[],drafts:[],tid:1,phase:'home'
 let fadeT=0;
 function musicUnlock(){const m=$('music');if(!m)return;try{m.muted=true;const p=m.play();
   const done=()=>{m.pause();m.currentTime=0;m.muted=!S.sound;};if(p&&p.then)p.then(done).catch(()=>{m.muted=!S.sound;});else done();}catch(e){}}
-/* 90 s round: the track from the start. 30 s round: only the last 30 seconds of the track. */
+/* 90 s round: the track from the start. 30 s round: only the last 34 seconds of the track
+   (30 s of countdown, then the last few seconds of the track play out as the finale). */
 function musicOffset(elapsed){const m=$('music');const dur=(m&&isFinite(m.duration)&&m.duration>0)?m.duration:92.19;
-  return(S.secs===30?Math.max(0,dur-30):0)+elapsed;}
+  return(S.secs===30?Math.max(0,dur-34):0)+elapsed;}
 function musicStart(off){const m=$('music');if(!m)return;clearInterval(fadeT);m.volume=.85;m.muted=!S.sound;
   try{m.currentTime=Math.max(0,off||0);}catch(e){}const p=m.play();if(p&&p.catch)p.catch(()=>{});}
 function musicStop(fade){const m=$('music');if(!m)return;clearInterval(fadeT);
@@ -900,7 +901,7 @@ async function finish(reason){
     if(D.moved&&D.src.from==='row')S.tokens.splice(Math.min(D.src.idx,S.tokens.length),0,D.src.tok);
     if(D.ghost)D.ghost.remove();D=null;S.hover=null;$('expr').classList.remove('over');
   }
-  musicStop(true);
+  if(reason!=='time')musicStop(true); // time up: let the track play out to its end; declaring early fades it
   const g=S.game;
   // every saved draft plus whatever is on the board now; the one closest to the target is the answer
   const cands=S.drafts.map((d,i)=>({n:i+1,tokens:d.tokens}));
