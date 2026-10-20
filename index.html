@@ -26,6 +26,7 @@ body{font-family:"Trebuchet MS","Segoe UI",Arial,sans-serif;color:#fff;backgroun
 .names{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}
 .nm{font:700 14px "Trebuchet MS",Arial,sans-serif;color:#fff;background:linear-gradient(#3170e8,#1a4cb8);border:2px solid #7fa4f0;border-radius:8px;padding:10px 3px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .nm:hover{filter:brightness(1.15)}
+.nm.anon{background:linear-gradient(#4b5878,#2e3a58);border-color:#9aa8c8;border-style:dashed}
 .nm.sel{background:linear-gradient(#ffd84d,#ffb000);color:#2a1a00;border-color:#fff3b0;box-shadow:0 0 14px rgba(255,198,26,.7)}
 .btn{font:800 16px "Trebuchet MS",Arial,sans-serif;letter-spacing:1px;color:#fff;background:linear-gradient(#3170e8,#1a4cb8);border:2px solid #9fbcf5;border-radius:10px;padding:10px 18px;cursor:pointer;box-shadow:0 4px 0 #082a78}
 .btn:active{transform:translateY(3px);box-shadow:0 1px 0 #082a78}
@@ -103,9 +104,14 @@ body{font-family:"Trebuchet MS","Segoe UI",Arial,sans-serif;color:#fff;backgroun
 .hint{flex:none;font-size:12px;color:#dbe7ff;margin-top:8px;line-height:1.35}
 
 /* ---------- results ---------- */
-.reshead{flex:none;display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
+.reshead{flex:none;display:flex;align-items:center;gap:14px;margin-bottom:8px}
 .reshead h2{margin:0;font:900 italic 28px "Arial Black",sans-serif;color:var(--gold);text-shadow:0 3px 0 #7a3b00;white-space:nowrap}
-.sol{flex:1;font-size:14px;color:#e8f0ff}
+.yourcalc{flex:1;min-width:0;background:linear-gradient(#0d2f93,#071d63);border:2px solid var(--gold);border-radius:10px;padding:5px 14px 6px;box-shadow:0 0 16px rgba(255,198,26,.35)}
+.yclab{display:flex;gap:10px;align-items:baseline;font:800 11px "Trebuchet MS",Arial,sans-serif;letter-spacing:2px;color:var(--gold);white-space:nowrap}
+.yclab span{color:#cfe0ff;letter-spacing:1px;font-weight:700;overflow:hidden;text-overflow:ellipsis}
+.ycexpr{font:800 26px/1.15 "Trebuchet MS","Segoe UI",Arial,sans-serif;color:#fff;overflow-wrap:anywhere}
+.ycexpr em{font-style:normal;color:var(--gold)}
+.solcap{position:absolute;top:6px;right:10px;font-size:12px;font-style:italic;color:#6b7694;z-index:2;pointer-events:none;background:rgba(251,252,254,.9);padding:0 5px;border-radius:4px}
 #solWrap{position:relative}
 #solBoard{position:absolute;inset:0;width:100%;height:100%;cursor:pointer}
 .resgrid{flex:none;display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
@@ -127,11 +133,19 @@ body{font-family:"Trebuchet MS","Segoe UI",Arial,sans-serif;color:#fff;backgroun
 .card.wide{width:1000px;max-width:94%}
 .card h2{margin:0 0 10px;font:900 italic 28px "Arial Black",sans-serif;color:var(--gold)}
 .lbcols{column-count:3;column-gap:16px;text-align:left;margin-bottom:12px}
-.lr{display:grid;grid-template-columns:28px 1fr 54px;gap:6px;padding:5px 8px;border-bottom:1px solid rgba(255,255,255,.14);break-inside:avoid;font-size:14px}
+.lr{display:grid;grid-template-columns:28px 1fr 50px 34px;gap:6px;padding:5px 8px;border-bottom:1px solid rgba(255,255,255,.14);break-inside:avoid;font-size:14px}
 .lr i{font-style:normal;font-weight:700;color:#a9c3ff}
 .lr b{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lr span{text-align:right;color:var(--gold);font-weight:700}
+.lr em{font-style:normal;text-align:right;color:#a9c3ff;font-size:12px;line-height:20px}
 .lr.me{background:rgba(255,198,26,.24)}
+.lr.unr{opacity:.55}
+.lbnote{font-size:12.5px;color:#cfe0ff;margin:-4px 0 10px}
+.moderow{display:flex;align-items:stretch;gap:10px;margin-top:12px}
+.modelab{align-self:center;font-weight:800;letter-spacing:2px;font-size:12px;text-transform:uppercase;color:#dbe7ff;margin-right:2px}
+.modebtn{flex:1;font:800 17px "Trebuchet MS",Arial,sans-serif;color:#fff;background:linear-gradient(#3170e8,#1a4cb8);border:2px solid #7fa4f0;border-radius:10px;padding:8px 6px;cursor:pointer;line-height:1.2}
+.modebtn small{display:block;font:700 10px "Trebuchet MS",Arial,sans-serif;letter-spacing:2px;opacity:.85}
+.modebtn.sel{background:linear-gradient(#ffd84d,#ffb000);color:#2a1a00;border-color:#fff3b0;box-shadow:0 0 14px rgba(255,198,26,.6)}
 
 /* ---------- portrait window ---------- */
 .portrait .screen{padding:12px 16px}
@@ -146,6 +160,9 @@ body{font-family:"Trebuchet MS","Segoe UI",Arial,sans-serif;color:#fff;backgroun
 .portrait .tile{height:64px;font-size:38px}
 .portrait .opb,.portrait .sym{height:50px}
 .portrait .resgrid{grid-template-columns:1fr}
+.portrait .reshead{flex-wrap:wrap}
+.portrait .yourcalc{flex:1 1 100%}
+.portrait .ycexpr{font-size:21px}
 .portrait .lbcols{column-count:2}
 </style>
 </head>
@@ -159,12 +176,16 @@ body{font-family:"Trebuchet MS","Segoe UI",Arial,sans-serif;color:#fff;backgroun
     <div class="panel">
       <h2>Who's playing?</h2>
       <div id="names" class="names"></div>
+      <div id="modeRow" class="moderow hidden"><div class="modelab">Round length</div>
+        <button class="modebtn sel" data-s="90">90 seconds<small>FULL ROUND</small></button>
+        <button class="modebtn" data-s="30">30 seconds<small>LIKE THE SHOW</small></button></div>
       <button id="playBtn" class="btn gold big" disabled>Select your name</button>
     </div>
     <div class="panel">
       <h2>Class leaderboard</h2>
       <div id="homeInfo" class="homeinfo">Pick your name to see the standings.</div>
       <button id="homeFull" class="mini" style="margin-top:8px">View full leaderboard</button>
+      <div class="note">Ranked by average points per game. Each player's lowest 10% of games are dropped (one game dropped for every 10 played). A player needs 3 games to be ranked.</div>
       <div id="modeNote" class="note"></div>
     </div>
   </div>
@@ -174,7 +195,7 @@ body{font-family:"Trebuchet MS","Segoe UI",Arial,sans-serif;color:#fff;backgroun
   <header class="bar">
     <div class="logo small">COUNTDOWN</div>
     <div class="pill">Game <b id="pGame"></b></div>
-    <div class="pill">Points <b id="pPts"></b></div>
+    <div class="pill">Avg <b id="pPts"></b></div>
     <button id="soundBtn" class="icon" title="Sound">🔊</button>
     <button id="quitBtn" class="icon" title="Home">⌂</button>
   </header>
@@ -207,8 +228,8 @@ body{font-family:"Trebuchet MS","Segoe UI",Arial,sans-serif;color:#fff;backgroun
       </div>
 
       <div id="resultPane" class="hidden">
-        <div class="reshead"><h2 id="rTitle">Time's up!</h2><div class="sol" id="rSol"></div></div>
-        <div class="boardframe"><div class="grid" id="solWrap"><svg id="solBoard" viewBox="0 0 960 400" xmlns="http://www.w3.org/2000/svg">
+        <div class="reshead"><h2 id="rTitle">Time's up!</h2><div class="yourcalc"><div class="yclab"><b>YOUR CALCULATION</b><span id="ycNote"></span></div><div class="ycexpr" id="ycExpr"></div></div></div>
+        <div class="boardframe"><div class="grid" id="solWrap"><div class="solcap" id="rSol"></div><svg id="solBoard" viewBox="0 0 960 400" xmlns="http://www.w3.org/2000/svg">
           <g id="inkLayer"></g>
           <g id="pen" style="display:none"><path d="M0 0L9 -5L50 -44L58 -36L16 5Z" fill="#1d2130"/><path d="M30 -28L38 -20L52 -44L58 -36Z" fill="#2a64dc"/><path d="M0 0L9 -5L13 1Z" fill="#555"/></g>
         </svg></div></div>
@@ -217,7 +238,6 @@ body{font-family:"Trebuchet MS","Segoe UI",Arial,sans-serif;color:#fff;backgroun
           <div>
             <div class="rgrid"><div><small>Your answer</small><b id="rVal"></b></div><div><small>Target</small><b id="rTar"></b></div><div><small>Off by</small><b id="rOff"></b></div></div>
             <div id="rPts" class="bigpts"></div>
-            <div id="rBest" class="bestline"></div>
           </div>
           <div id="rLB" class="lbbox">Updating leaderboard…</div>
         </div>
@@ -229,6 +249,7 @@ body{font-family:"Trebuchet MS","Segoe UI",Arial,sans-serif;color:#fff;backgroun
 
 <div id="lbModal" class="overlay hidden"><div class="card wide">
   <h2>Leaderboard</h2>
+  <div class="lbnote">Average points per game, lowest 10% of each player's games dropped. Players are ranked from 3 games.</div>
   <div id="lbCols" class="lbcols"></div>
   <button id="lbClose" class="btn gold">Close</button>
 </div></div>
@@ -238,11 +259,10 @@ body{font-family:"Trebuchet MS","Segoe UI",Arial,sans-serif;color:#fff;backgroun
 <script>
 /* ================= CONFIG ================= */
 // Paste your Google Apps Script web-app URL here (see leaderboard.gs). Leave empty to run with a local, this-device-only leaderboard.
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwkXCysBpPmXlsyKtEP_1mIG_A4W7tBrOi202A-xhn6e-Vxp3Vf2yAHqWz5ljzwXZKqpA/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyI5l1BDsOeRMlUFbr5r3dhra8kuXrUh1rCRYN_ab_g6BHWAevyVVlYlzHEiwn97hh4XQ/exec";
 
 const NAMES = ["Zoe B","Thea B","Esme D","Bailey D","Azmaan G","Christopher G","Georgia H","Elin H","Leo H","George M","Nixon M","Shanaya M","Chloe M","Mitchell O","Monty S","Archie S","Oliver T","Elise T","Indi vB","William vR","Hudson W","Roman W","Oliver W","Max W","Caitlyn W","Jazmine W","Michael Y","Joshua Y","Mr Mills"];
 const EASY_PLAYERS = new Set(["Shanaya M","Chloe M","Jazmine W","Roman W","Esme D","Mr Mills"]);
-const ROUND_SECONDS = 90;
 const MAX_CALCS = 3; // calculations per round: the saved drafts plus the one being worked on
 
 //#GEN-START
@@ -290,6 +310,16 @@ function pickNumbers(nl){
   return L.concat(shuffle(pool).slice(0,6-nl));
 }
 function largeCount(){const r=Math.random();return r<.05?0:r<.30?1:r<.65?2:r<.90?3:4;}
+/* true if the target can be hit using just 3 (or fewer) of the numbers */
+function easyReach(nums,target){
+  const N=nums.length,OP=['+','−','×','÷'];
+  for(let i=0;i<N;i++){const a=atom(nums[i]);
+    for(let j=0;j<N;j++){if(j===i)continue;const b=atom(nums[j]);
+      for(const op of OP){const r=combine(a,b,op);if(!r)continue;if(r.v===target)return true;
+        for(let k=0;k<N;k++){if(k===i||k===j)continue;const c=atom(nums[k]);
+          for(const o2 of OP){for(const x of[combine(r,c,o2),combine(c,r,o2)])if(x&&x.v===target)return true;}}}}}
+  return false;
+}
 function makeGame(tier){
   const OPS1=['+','+','−','×','×'],OPS=['+','−','×','×','÷','÷'];
   const randomTarget=tier==='real'&&Math.random()<.2;
@@ -303,6 +333,10 @@ function makeGame(tier){
       nums=pickNumbers(1);res=build(nums,OPS1,true);
     }else if(tier==='medium'){
       nums=pickNumbers(2);res=build(nums,OPS,false);
+    }else if(tier==='hard'){ // anonymous profile: the real show's random draw, minus anything easy to reach
+      nums=pickNumbers(largeCount());const tg=101+rnd(899);
+      if(nums.includes(tg)||easyReach(nums,tg))continue;
+      return{nums,target:tg,solution:null,steps:null,tier};
     }else{
       nums=pickNumbers(largeCount());
       if(!randomTarget){res=build(shuffle(nums).slice(0,pick([4,5,6,6])),OPS,false);}
@@ -402,25 +436,39 @@ function inkSVG(str,{scale=2.4,seed=1,color='#14161f',sw=1.6}={}){
 }
 
 /* ================= leaderboard (server or local) ================= */
+/* Leaderboard = average points per game, with each player's lowest 10% of games dropped
+   (floor(games x 10%), so nothing is dropped until a player has 10 games). Same maths as leaderboard.gs. */
+const DROP_FRAC=0.10;
+function statsFor(list){
+  const n=list.length,drop=Math.floor(n*DROP_FRAC);
+  const kept=list.slice().sort((a,b)=>a-b).slice(drop);
+  const total=list.reduce((a,b)=>a+b,0);
+  const avg=kept.length?kept.reduce((a,b)=>a+b,0)/kept.length:0;
+  return{avg:Math.round(avg*1000)/1000,total,games:n};
+}
+const MIN_GAMES=3; // games needed before a player is ranked
 function computeState(rows,player){
-  rows=rows.slice().sort((a,b)=>b.points-a.points||a.name.localeCompare(b.name));
-  const top3=rows.slice(0,3);let you=null;
+  rows=rows.map(r=>Object.assign({},r,{ranked:r.games>=MIN_GAMES}));
+  rows.sort((a,b)=>(b.ranked-a.ranked)||(a.ranked?(b.avg-a.avg||b.games-a.games):(b.games-a.games))||a.name.localeCompare(b.name));
+  const ranked=rows.filter(r=>r.ranked);
+  rows.forEach(r=>{r.rank=r.ranked?1+ranked.filter(x=>x.avg>r.avg).length:null;});
+  const top3=ranked.slice(0,3);let you=null;
   const me=rows.find(r=>r.name===player);
   if(me){
-    const ahead=rows.filter(r=>r.points>me.points);
     let above=null;
-    if(ahead.length){const p=Math.min(...ahead.map(r=>r.points));above={points:p,gap:p-me.points,names:ahead.filter(r=>r.points===p).map(r=>r.name)};}
-    you={name:me.name,points:me.points,games:me.games,rank:1+ahead.length,above};
+    if(me.ranked){const ahead=ranked.filter(r=>r.avg>me.avg);
+      if(ahead.length){const p=Math.min(...ahead.map(r=>r.avg));above={avg:p,gap:Math.round((p-me.avg)*1000)/1000,names:ahead.filter(r=>r.avg===p).map(r=>r.name)};}}
+    you={name:me.name,avg:me.avg,total:me.total,games:me.games,ranked:me.ranked,rank:me.rank,need:Math.max(0,MIN_GAMES-me.games),above};
   }
   return{ok:true,rows,top3,you};
 }
 function localApi(p){
   const db=LS.get('cd_lb',{players:{},ids:[]});
-  const rows=()=>NAMES.map(n=>({name:n,points:(db.players[n]||{}).points||0,games:(db.players[n]||{}).games||0}));
+  const rows=()=>NAMES.map(n=>Object.assign({name:n},statsFor((db.players[n]||{}).pts||[])));
   if(p.action==='submit'&&!db.ids.includes(p.gameId)){
     db.ids.push(p.gameId);
-    const pl=db.players[p.player]||{points:0,games:0};
-    pl.points+=pointsFor(+p.target,p.result===''?null:+p.result);pl.games+=1;db.players[p.player]=pl;LS.set('cd_lb',db);
+    const pl=db.players[p.player]||{pts:[]};if(!pl.pts)pl.pts=[];
+    pl.pts.push(pointsFor(+p.target,p.result===''?null:+p.result));db.players[p.player]=pl;LS.set('cd_lb',db);
   }
   return Promise.resolve(computeState(rows(),p.player));
 }
@@ -429,7 +477,9 @@ async function api(params){
   const c=new AbortController();const to=setTimeout(()=>c.abort(),9000);
   try{
     const r=await fetch(SCRIPT_URL+'?'+new URLSearchParams(params),{signal:c.signal});
-    const j=await r.json();if(!j.ok)throw new Error(j.error||'error');return j;
+    const j=await r.json();if(!j.ok)throw new Error(j.error||'error');
+    if(j.rows&&j.rows.length&&(j.rows[0].avg===undefined||j.rows[0].ranked===undefined))throw new Error('Leaderboard script is out of date – paste in the new leaderboard.gs and deploy a new version.');
+    return j;
   }finally{clearTimeout(to);}
 }
 async function submitScore(rec){
@@ -442,11 +492,15 @@ async function submitScore(rec){
 }
 
 /* ================= state ================= */
-const S={player:null,game:null,tokens:[],drafts:[],tid:1,phase:'home',endsAt:0,raf:0,lastSec:-1,serverGames:0,pts:0,sound:true,hover:null,drawId:0,skip:false,scale:1};
+const ANON='Anonymous';
+const S={anonPts:[],player:null,game:null,tokens:[],drafts:[],tid:1,phase:'home',endsAt:0,raf:0,lastSec:-1,serverGames:0,pts:0,avg:0,secs:90,pickSecs:90,sound:true,hover:null,drawId:0,skip:false,scale:1};
 /* ---- background music (plays while the clock runs) ---- */
 let fadeT=0;
 function musicUnlock(){const m=$('music');if(!m)return;try{m.muted=true;const p=m.play();
   const done=()=>{m.pause();m.currentTime=0;m.muted=!S.sound;};if(p&&p.then)p.then(done).catch(()=>{m.muted=!S.sound;});else done();}catch(e){}}
+/* 90 s round: the track from the start. 30 s round: only the last 30 seconds of the track. */
+function musicOffset(elapsed){const m=$('music');const dur=(m&&isFinite(m.duration)&&m.duration>0)?m.duration:92.19;
+  return(S.secs===30?Math.max(0,dur-30):0)+elapsed;}
 function musicStart(off){const m=$('music');if(!m)return;clearInterval(fadeT);m.volume=.85;m.muted=!S.sound;
   try{m.currentTime=Math.max(0,off||0);}catch(e){}const p=m.play();if(p&&p.catch)p.catch(()=>{});}
 function musicStop(fade){const m=$('music');if(!m)return;clearInterval(fadeT);
@@ -463,39 +517,57 @@ function beep(freq,dur,vol){
 
 /* ================= home ================= */
 NAMES.forEach(n=>{const b=document.createElement('button');b.className='nm';b.textContent=n;b.onclick=()=>selectPlayer(n);$('names').append(b);});
+{const b=document.createElement('button');b.className='nm anon';b.textContent=ANON;b.title='Not on the leaderboard – much harder boards';b.onclick=()=>selectPlayer(ANON);$('names').append(b);}
 $('modeNote').textContent=SCRIPT_URL?'':'Leaderboard is running in local mode (this device only). Add your Apps Script URL to share scores across the class.';
 async function selectPlayer(n){
-  S.player=n;LS.set('cd_last',n);
+  S.player=n;S.serverGames=0;if(n!==ANON)LS.set('cd_last',n);
   [...$('names').children].forEach(b=>b.classList.toggle('sel',b.textContent===n));
-  $('playBtn').disabled=false;$('playBtn').textContent='Play as '+n+' ▶';
+  $('playBtn').disabled=false;$('playBtn').textContent=n===ANON?'Play anonymously ▶':'Play as '+n+' ▶';
+  updateModeRow();
   await refreshHome();
 }
+const gamesDone=()=>S.player===ANON?S.anonPts.length:Math.max((LS.get('cd_games',{})[S.player]||0),S.serverGames||0);
+// Players with more than 20 games can choose a 90 s or a 30 s round
+function paintMode(){document.querySelectorAll('.modebtn').forEach(b=>b.classList.toggle('sel',+b.dataset.s===S.pickSecs));}
+function updateModeRow(){
+  const show=!!S.player&&(S.player===ANON||gamesDone()>20);
+  $('modeRow').classList.toggle('hidden',!show);
+  S.pickSecs=show&&LS.get('cd_secs_'+S.player,90)===30?30:90;paintMode();
+}
+document.querySelectorAll('.modebtn').forEach(b=>b.onclick=()=>{S.pickSecs=+b.dataset.s;LS.set('cd_secs_'+S.player,S.pickSecs);paintMode();});
 function renderLB(box,st,player){
   box.innerHTML='';
   const medals=['🥇','🥈','🥉'];
+  if(!st.top3.length){const d=document.createElement('div');d.textContent='Nobody is ranked yet – a player needs '+MIN_GAMES+' games to appear on the leaderboard.';d.style.marginBottom='6px';box.append(d);}
   st.top3.forEach((r,i)=>{const d=document.createElement('div');d.className='lbrow'+(r.name===player?' me':'');
-    d.innerHTML='<span></span><span></span>';d.children[0].textContent=medals[i]+' '+r.name;d.children[1].textContent=r.points+' pts';box.append(d);});
+    d.innerHTML='<span></span><span></span>';d.children[0].textContent=medals[i]+' '+r.name;d.children[1].textContent=r.avg.toFixed(2)+' avg';box.append(d);});
   if(st.you){
     const y=document.createElement('div');y.style.marginTop='8px';
-    y.textContent='You: #'+st.you.rank+' with '+st.you.points+' pts ('+st.you.games+' games)';box.append(y);
+    const gm=st.you.games+' game'+(st.you.games===1?'':'s');
+    y.textContent=st.you.ranked?'You: #'+st.you.rank+' with '+st.you.avg.toFixed(2)+' avg ('+gm+')':'You: not ranked yet – '+gm+' played'+(st.you.games?' ('+st.you.avg.toFixed(2)+' avg so far)':'');
+    box.append(y);
     const a=document.createElement('div');a.className='above';
-    a.textContent=st.you.above?'Just above you: '+st.you.above.names.join(', ')+' ('+st.you.above.points+' pts, '+st.you.above.gap+' ahead)':'You are top of the class! 👑';
+    if(!st.you.ranked)a.textContent='Play '+st.you.need+' more game'+(st.you.need===1?'':'s')+' to join the leaderboard.';
+    else a.textContent=st.you.above?'Just above you: '+st.you.above.names.join(', ')+' ('+st.you.above.avg.toFixed(2)+' avg, '+st.you.above.gap.toFixed(2)+' ahead)':'You are top of the class! 👑';
     box.append(a);
   }
 }
 async function refreshHome(){
-  const n=S.player;if(!n)return;$('homeInfo').textContent='Loading…';
+  const n=S.player;if(!n)return;
+  if(n===ANON){S.avg=statsFor(S.anonPts).avg;updateModeRow();
+    $('homeInfo').textContent='Anonymous play: your scores are not recorded and you will not appear on the leaderboard. Rounds are as tough as the real show.';return;}
+  $('homeInfo').textContent='Loading…';
   try{const st=await api({action:'state',player:n});if(S.player!==n)return;
-    S.serverGames=st.you?st.you.games:0;S.pts=st.you?st.you.points:0;renderLB($('homeInfo'),st,n);
-  }catch(e){$('homeInfo').textContent='Could not reach the leaderboard – you can still play; scores will sync later.';}
+    S.serverGames=st.you?st.you.games:0;S.avg=st.you?st.you.avg:0;renderLB($('homeInfo'),st,n);updateModeRow();
+  }catch(e){$('homeInfo').textContent=/out of date/.test(e.message)?e.message:'Could not reach the leaderboard – you can still play; scores will sync later.';updateModeRow();}
 }
 async function showFull(){
   $('lbModal').classList.remove('hidden');const t=$('lbCols');t.textContent='Loading…';
   try{const st=await api({action:'state',player:S.player||''});t.innerHTML='';
-    st.rows.forEach(r=>{const rank=1+st.rows.filter(x=>x.points>r.points).length;const d=document.createElement('div');
-      d.className='lr'+(r.name===S.player?' me':'');d.innerHTML='<i></i><b></b><span></span>';
-      d.children[0].textContent=rank;d.children[1].textContent=r.name;d.children[2].textContent=r.points;t.append(d);});
-  }catch(e){t.textContent='Leaderboard unavailable right now.';}
+    st.rows.forEach(r=>{const d=document.createElement('div');
+      d.className='lr'+(r.name===S.player?' me':'')+(r.ranked?'':' unr');d.innerHTML='<i></i><b></b><span></span><em></em>';
+      d.children[0].textContent=r.ranked?r.rank:'–';d.children[1].textContent=r.name;d.children[2].textContent=r.avg.toFixed(2);d.children[3].textContent=r.games+'g';t.append(d);});
+  }catch(e){t.textContent=/out of date/.test(e.message)?e.message:'Leaderboard unavailable right now.';}
 }
 $('homeFull').onclick=showFull;$('fullBtn').onclick=showFull;$('lbClose').onclick=()=>$('lbModal').classList.add('hidden');
 $('playBtn').onclick=startGame;
@@ -525,7 +597,7 @@ function initClock(){
   $('clock').innerHTML=h;
 }
 function drawClock(elapsedMs){
-  const lap=Math.min(1,Math.max(0,elapsedMs/(ROUND_SECONDS*1000))),a=lap*2*Math.PI,r=97,C=120;
+  const lap=Math.min(1,Math.max(0,elapsedMs/((S.secs===30?60:S.secs)*1000)))  /* 90 s = a full lap; 30 s = half a lap, as on the show */,a=lap*2*Math.PI,r=97,C=120;
   let d='';
   if(lap>=0.9995)d=`M${C} ${C-r}A${r} ${r} 0 1 1 ${C} ${C+r}A${r} ${r} 0 1 1 ${C} ${C-r}Z`;
   else if(lap>0.0005){const x=C+Math.sin(a)*r,y=C-Math.cos(a)*r;d=`M${C} ${C}L${C} ${C-r}A${r} ${r} 0 ${lap>.5?1:0} 1 ${x} ${y}Z`;}
@@ -533,7 +605,7 @@ function drawClock(elapsedMs){
   $('hand').setAttribute('transform',`rotate(${lap*360} ${C} ${C})`);
 }
 function tickClock(){
-  const total=ROUND_SECONDS*1000,left=Math.max(0,S.endsAt-Date.now());
+  const total=S.secs*1000,left=Math.max(0,S.endsAt-Date.now());
   drawClock(total-left);
   const sec=Math.ceil(left/1000);$('timer').textContent=fmt(sec);$('timer').classList.toggle('low',sec<=10);
   S.lastSec=sec;
@@ -543,6 +615,8 @@ function tickClock(){
 
 /* ================= game start ================= */
 function tierFor(player,no){
+  if(player===ANON)return'hard'; // anonymous: tough, real-show boards from game 1
+  if(no>21)return'real'; // more than 20 games played: normal boards for everyone, no easing
   if(EASY_PLAYERS.has(player))return'vEasy';
   return no<=5?'easy':no<=10?'medium':'real';
 }
@@ -553,19 +627,20 @@ async function startGame(){
   S.drawId++;S.hover=null;musicStop(false);
   $('home').classList.add('hidden');$('game').classList.remove('hidden');
   $('resultPane').classList.add('hidden');$('playPane').classList.remove('hidden');
-  $('pName').textContent=S.player;$('pPts').textContent=S.pts;
-  initClock();drawClock(0);$('timer').textContent=fmt(ROUND_SECONDS);$('timer').classList.remove('low');
+  $('pName').textContent=S.player;$('pPts').textContent=(S.player===ANON&&!S.anonPts.length)?'–':S.avg.toFixed(2);
   const pend=LS.get(pendKey(),null);
+  S.secs=(pend&&pend.game)?(pend.game.secs||90):((gamesDone()>20||S.player===ANON)&&S.pickSecs===30?30:90);
+  initClock();drawClock(0);$('timer').textContent=fmt(S.secs);$('timer').classList.remove('low');
   if(pend&&pend.game){ // resume a game in progress
     S.game=pend.game;S.tokens=pend.tokens||[];S.drafts=pend.drafts||[];S.tid=pend.tid||1;
     $('pGame').textContent=S.game.no;buildTiles(true);setTarget(S.game.target);renderAll();
     S.phase='play';
     if(pend.endsAt&&pend.endsAt<=Date.now()){S.endsAt=pend.endsAt;finish('time');return;}
-    S.endsAt=pend.endsAt||Date.now()+ROUND_SECONDS*1000;S.lastSec=-1;savePending();updateSave();musicStart((ROUND_SECONDS*1000-(S.endsAt-Date.now()))/1000);tickClock();return;
+    S.endsAt=pend.endsAt||Date.now()+S.secs*1000;S.lastSec=-1;savePending();updateSave();musicStart(musicOffset((S.secs*1000-(S.endsAt-Date.now()))/1000));tickClock();return;
   }
-  const done=Math.max(LS.get('cd_games',{})[S.player]||0,S.serverGames||0);
+  const done=gamesDone();
   const no=done+1;const g=makeGame(tierFor(S.player,no));
-  S.game={no,id:S.player+'|'+no+'|'+Date.now(),nums:g.nums,target:g.target,solution:g.solution,steps:g.steps};
+  S.game={no,secs:S.secs,id:S.player+'|'+no+'|'+Date.now(),nums:g.nums,target:g.target,solution:g.solution,steps:g.steps};
   S.tokens=[];S.drafts=[];S.tid=1;$('pGame').textContent=no;musicUnlock();
   buildTiles(false);setTarget(null);renderAll();
   S.phase='reveal';
@@ -575,7 +650,7 @@ async function startGame(){
   for(let k=0;k<14;k++){if(S.phase!=='reveal')return;setTarget('?');await sleep(110);}
   if(S.phase!=='reveal')return;
   setTarget(S.game.target);beep(1000,.25,.06);await sleep(500);
-  S.phase='play';S.endsAt=Date.now()+ROUND_SECONDS*1000;S.lastSec=-1;savePending();updateSave();musicStart(0);tickClock();
+  S.phase='play';S.endsAt=Date.now()+S.secs*1000;S.lastSec=-1;savePending();updateSave();musicStart(musicOffset(0));tickClock();
 }
 function buildTiles(faceUp){
   const box=$('tiles');box.innerHTML='';
@@ -805,11 +880,11 @@ async function startSolution(g){
   $('inkLayer').innerHTML='';$('pen').style.display='none';
   if(!steps){
     await sleep(80);if(S.game!==mine||S.phase!=='done')return;
-    const b=solveBest(g.nums,g.target,700);
+    const b=solveBest(g.nums,g.target,1200);
     steps=b.steps||[];exact=b.d===0;lastV=b.v;if(!steps.length)only=b.v;
   }
   if(S.game!==mine||S.phase!=='done')return;
-  $('rSol').textContent=exact?'One possible solution (tap the board to skip the writing):':`No exact route found – the closest we found is ${lastV}, ${Math.abs(lastV-g.target)} away:`;
+  $('rSol').textContent=exact?'Computer\'s solution · tap to skip':`No exact route found – closest is ${lastV} (${Math.abs(lastV-g.target)} away)`;
   let rows=steps.map(s=>({pre:`${s.a} ${s.op} ${s.b} =`,res:String(s.r)}));
   if(only!=null)rows=[{pre:'',res:String(only)}];
   await sleep(500);
@@ -836,20 +911,27 @@ async function finish(reason){
   const pts=pointsFor(g.target,val);
   const exprText=pick?tokText(pick.tokens):'';
   localStorage.removeItem(pendKey());
-  const gm=LS.get('cd_games',{});gm[S.player]=Math.max(gm[S.player]||0,g.no);LS.set('cd_games',gm);
-  S.serverGames=Math.max(S.serverGames||0,g.no);
-  S.pts+=pts;$('pPts').textContent=S.pts;
+  if(S.player!==ANON){const gm=LS.get('cd_games',{});gm[S.player]=Math.max(gm[S.player]||0,g.no);LS.set('cd_games',gm);
+  S.serverGames=Math.max(S.serverGames||0,g.no);}
 
   $('playPane').classList.add('hidden');$('resultPane').classList.remove('hidden');
   $('rTitle').textContent=reason==='time'?"Time's up!":(diff===0?'Spot on! 🎉':'Answer declared');
   $('rVal').textContent=val==null?'–':val;$('rTar').textContent=g.target;$('rOff').textContent=diff==null?'–':diff;
   const rp=$('rPts');rp.textContent='+'+pts;rp.className='bigpts'+(pts?'':' zero');
-  $('rBest').textContent=pick?(pick.of>1?`Closest of your ${pick.of} calculations (#${pick.n}): `:'Your calculation: ')+exprText+' = '+val:'Nothing valid was on the board.';
+  $('ycNote').textContent=pick&&pick.of>1?`closest of your ${pick.of} calculations (#${pick.n})`:'';
+  const ye=$('ycExpr');ye.textContent='';
+  if(pick){ye.append(document.createTextNode(exprText+' = '));const em=document.createElement('em');em.textContent=val;ye.append(em);}
+  else ye.textContent='Nothing valid was on the board';
   const ro=$('tilesRO');ro.innerHTML='';g.nums.forEach(n=>{const t=document.createElement('div');t.className='tile';t.textContent=n;ro.append(t);});
   $('rLB').textContent='Updating leaderboard…';
   startSolution(g);
-  const st=await submitScore({action:'submit',player:S.player,gameId:g.id,gameNo:g.no,target:g.target,numbers:g.nums.join('-'),expr:exprText,result:val==null?'':val,points:pts});
-  if(st&&st.you){S.pts=st.you.points;$('pPts').textContent=S.pts;S.serverGames=Math.max(S.serverGames,st.you.games);renderLB($('rLB'),st,S.player);}
+  if(S.player===ANON){ // anonymous rounds never touch the leaderboard
+    S.anonPts.push(pts);S.avg=statsFor(S.anonPts).avg;$('pPts').textContent=S.avg.toFixed(2);
+    $('rLB').textContent='Anonymous round – not added to the leaderboard. Session average: '+S.avg.toFixed(2)+' over '+S.anonPts.length+' game'+(S.anonPts.length===1?'':'s')+'.';
+    return;
+  }
+  const st=await submitScore({action:'submit',player:S.player,gameId:g.id,gameNo:g.no,target:g.target,numbers:g.nums.join('-'),expr:exprText,result:val==null?'':val,points:pts,secs:g.secs||90});
+  if(st&&st.you){S.avg=st.you.avg;$('pPts').textContent=S.avg.toFixed(2);S.serverGames=Math.max(S.serverGames,st.you.games);renderLB($('rLB'),st,S.player);}
   else $('rLB').textContent='Score saved on this device – it will sync to the class leaderboard next time you are online.';
 }
 
